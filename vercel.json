@@ -1,7 +1,7 @@
 {
-    "buildCommand": "bash build.sh",
-    "installCommand": "echo 'Instalação via build.sh'",
-    "outputDirectory": "frontend/dist",
+    "github": {
+        "silent": true
+    },
     "rewrites": [
         {
             "source": "/api/v1/:path*",
