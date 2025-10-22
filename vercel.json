@@ -3,20 +3,14 @@
     "outputDirectory": "frontend/dist",
     "installCommand": "npm install --prefix frontend && npm install --prefix backend",
     "framework": null,
-    "functions": {
-        "api/index.js": {
-            "runtime": "nodejs20.x",
-            "maxDuration": 10
-        }
-    },
     "rewrites": [
         {
             "source": "/api/v1/:path*",
-            "destination": "/api/index.js"
+            "destination": "/api/index"
         },
         {
             "source": "/api/:path((?!v1).*)",
-            "destination": "/api/index.js"
+            "destination": "/api/index"
         },
         {
             "source": "/(.*)",
