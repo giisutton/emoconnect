@@ -1,6 +1,6 @@
 {
-    "buildCommand": "npm run build",
-    "installCommand": "npm install --prefix frontend",
+    "buildCommand": "bash build.sh",
+    "installCommand": "echo 'Instalação via build.sh'",
     "outputDirectory": "frontend/dist",
     "rewrites": [
         {
