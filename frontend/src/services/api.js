@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = '/api/v1';
+// Em produção (Vercel), usa a URL base relativa
+// Em desenvolvimento, usa o proxy do Vite
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
