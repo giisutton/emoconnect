@@ -227,17 +227,13 @@ app.post("/api/v1/analytics/event", (req, res) => {
   }
 });
 
-// Catch-all handler: serve index.html for SPA routes (only in development)
-if (NODE_ENV === "development") {
-  app.use((req, res, next) => {
-    if (!req.path.startsWith("/api")) {
-      const indexPath = join(__dirname, "../dist/index.html");
-      res.sendFile(indexPath);
-    } else {
-      next();
-    }
+// 404 handler for API routes
+app.use('/api', (req, res) => {
+  res.status(404).json({
+    error: 'Endpoint não encontrado',
+    path: req.path
   });
-}
+});
 
 // Global error handler
 app.use((error, req, res, next) => {
