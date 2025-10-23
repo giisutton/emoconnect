@@ -128,6 +128,7 @@ if (NODE_ENV === "development") {
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
+    service: "EmoConnect API",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
     version: process.env.npm_package_version || "1.0.0",
