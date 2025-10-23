@@ -41,7 +41,9 @@ const Login = () => {
             await login(email, senha);
             navigate('/');
         } catch (err) {
-            setError(err.message || 'Erro ao fazer login. Tente novamente.');
+            console.error('Erro no login:', err);
+            const errorMessage = err?.response?.data?.message || err?.message || 'Erro ao fazer login. Tente novamente.';
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }
