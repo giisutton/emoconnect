@@ -118,9 +118,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve static files
-app.use(express.static(join(__dirname, "../dist")));
+// Serve static files only in development
 if (NODE_ENV === "development") {
+  app.use(express.static(join(__dirname, "../dist")));
   app.use(express.static(join(__dirname, "../emoconnect")));
 }
 
@@ -164,7 +164,7 @@ app.post("/api/v1/chat/gemini", async (req, res) => {
 
     const response = await fetch(
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" +
-        process.env.GEMINI_API_KEY,
+      process.env.GEMINI_API_KEY,
       {
         method: "POST",
         headers: {
@@ -226,19 +226,17 @@ app.post("/api/v1/analytics/event", (req, res) => {
   }
 });
 
-// Catch-all handler: serve index.html for SPA routes
-app.use((req, res, next) => {
-  if (!req.path.startsWith("/api")) {
-    const indexPath =
-      NODE_ENV === "production"
-        ? join(__dirname, "../dist/index.html")
-        : join(__dirname, "../emoconnect/html/index.html");
-
-    res.sendFile(indexPath);
-  } else {
-    next();
-  }
-});
+// Catch-all handler: serve index.html for SPA routes (only in development)
+if (NODE_ENV === "development") {
+  app.use((req, res, next) => {
+    if (!req.path.startsWith("/api")) {
+      const indexPath = join(__dirname, "../dist/index.html");
+      res.sendFile(indexPath);
+    } else {
+      next();
+    }
+  });
+}
 
 // Global error handler
 app.use((error, req, res, next) => {
