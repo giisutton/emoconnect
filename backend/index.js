@@ -19,7 +19,21 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Configurar logger
+// Configurar logger (sem arquivos em produção/Vercel)
+const loggerTransports = [
+  new winston.transports.Console({
+    format: winston.format.simple()
+  })
+];
+
+// Adicionar logs em arquivo apenas em desenvolvimento
+if (process.env.NODE_ENV !== 'production') {
+  loggerTransports.push(
+    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
+    new winston.transports.File({ filename: "logs/combined.log" })
+  );
+}
+
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || "info",
   format: winston.format.combine(
@@ -28,13 +42,7 @@ const logger = winston.createLogger({
     winston.format.json()
   ),
   defaultMeta: { service: "emoconnect-api" },
-  transports: [
-    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
-    new winston.transports.File({ filename: "logs/combined.log" }),
-    new winston.transports.Console({
-      format: winston.format.simple()
-    })
-  ]
+  transports: loggerTransports
 });
 
 const app = express();
