@@ -2,6 +2,9 @@
 
 ## ✅ STATUS: TUDO FUNCIONANDO PERFEITAMENTE!
 
+### 🌐 Deploy Online
+**🔗 Acesse aqui:** [https://emoconnect-rho.vercel.app](https://emoconnect-rho.vercel.app)
+
 ---
 
 ## 📋 Resumo da Verificação Completa
@@ -10,19 +13,20 @@
 - **Status:** ✅ Rodando na porta 3000
 - **Banco de Dados:** ✅ Conectado (MySQL remoto)
 - **API:** ✅ Todas as rotas funcionando
-- **Autenticação:** ✅ JWT implementado
-- **CORS:** ✅ Configurado para localhost:5173
+- **Autenticação:** ✅ JWT implementado (correções de mensagens de erro aplicadas)
+- **CORS:** ✅ Configurado para localhost:5173 e produção
 
 ### ✅ Frontend
 - **Status:** ✅ Rodando na porta 5173
 - **React:** ✅ v19 com hooks
 - **Router:** ✅ Rotas configuradas
-- **API Service:** ✅ Axios com interceptors
+- **API Service:** ✅ Axios com interceptors e tratamento de erros aprimorado
 - **Auth Context:** ✅ Gerenciamento de estado
 - **Proxy:** ✅ Configurado no Vite
+- **Build de Produção:** ✅ Testado e validado
 
 ### ✅ Funcionalidades
-- **Login/Cadastro:** ✅ Funcionando
+- **Login/Cadastro:** ✅ Funcionando (bug de '[object Object]' corrigido)
 - **Home:** ✅ 16 emoções implementadas
 - **Chat:** ✅ Integração com IA
 - **Perfil:** ✅ Edição de dados
@@ -298,7 +302,75 @@ npm install
 
 ---
 
-## 🎯 Tudo Pronto!
+## � Deploy no Vercel
+
+### 📝 Pré-requisitos
+1. Conta no [Vercel](https://vercel.com)
+2. Repositório GitHub conectado
+
+### 🚀 Passos para Deploy
+
+#### 1. Variáveis de Ambiente no Vercel
+Acesse **Settings → Environment Variables** e adicione:
+
+```env
+# Backend (necessárias)
+PORT=3000
+NODE_ENV=production
+DB_HOST=mysql-giovana.alwaysdata.net
+DB_USER=giovana
+DB_PASSWORD=gi170807
+DB_NAME=giovana_tcc
+JWT_SECRET=sua_chave_secreta_forte_e_unica
+JWT_EXPIRES_IN=7d
+GEMINI_API_KEY=sua_chave_gemini
+LOG_LEVEL=info
+
+# CORS (importante!)
+ALLOWED_ORIGINS=https://seu-dominio.vercel.app,https://www.seu-dominio.vercel.app
+```
+
+⚠️ **IMPORTANTE:** Após deploy, atualize `ALLOWED_ORIGINS` com a URL gerada pelo Vercel.
+
+#### 2. Deploy via Interface Web
+1. Acesse https://vercel.com e faça login
+2. Clique em **"Add New Project"**
+3. Selecione o repositório `giisutton/emoconnect`
+4. Configure:
+   - **Framework Preset:** Other (detecção automática)
+   - **Root Directory:** `./`
+   - **Build Command:** (deixe em branco - configurado via vercel.json)
+   - **Output Directory:** `frontend/dist`
+5. Adicione as variáveis de ambiente acima
+6. Clique em **Deploy**
+
+#### 3. Testar Deploy
+Após deploy:
+1. Acesse a URL gerada (ex: `https://emoconnect-xxx.vercel.app`)
+2. Teste o login com credenciais de teste
+3. Verifique se o chat com IA está funcionando
+4. Confirme que todas as páginas carregam corretamente
+
+### 🐛 Troubleshooting
+
+**Erro de Login no Vercel?**
+- Verifique se `ALLOWED_ORIGINS` contém a URL do deploy
+- Confirme que todas as variáveis de ambiente estão configuradas
+- Veja os logs em **Vercel Dashboard → Functions → Logs**
+
+**Build Failed?**
+- Rode `npm run build` localmente no frontend
+- Verifique erros no console do Vercel
+- Confirme que `vercel.json` está na raiz do projeto
+
+**API não responde?**
+- Verifique se `api/index.js` está presente na raiz
+- Confirme que `backend/index.js` exporta o app Express (`export default app`)
+- Veja logs de runtime no Vercel
+
+---
+
+## �🎯 Tudo Pronto!
 
 **O projeto está 100% funcional e pronto para uso!**
 
@@ -306,7 +378,7 @@ npm install
 - [x] Backend configurado e rodando
 - [x] Frontend configurado e rodando
 - [x] Banco de dados conectado
-- [x] Autenticação funcionando
+- [x] Autenticação funcionando (bug de mensagens de erro corrigido)
 - [x] 16 emoções implementadas
 - [x] Chat com IA operacional
 - [x] Sistema de progresso ativo
@@ -315,6 +387,8 @@ npm install
 - [x] Zero erros no código
 - [x] Scripts de inicialização criados
 - [x] Documentação completa
+- [x] Configuração para deploy no Vercel
+- [x] Build de produção validado
 
 ---
 
@@ -331,6 +405,18 @@ npm install
 # Acesse: http://localhost:5173
 # Login: admin@emoconnect.com / Admin@2025
 ```
+
+---
+
+## 📝 Correções Aplicadas (26/10/2025)
+
+### Bug de Login Corrigido
+**Problema:** Mensagens de erro exibidas como `[object Object]` no frontend.
+
+**Solução:**
+1. **`authService.js`:** Adicionado helper `_formatServerError()` para normalizar mensagens de erro do servidor e evitar objetos serem renderizados como string
+2. **`Login.jsx`:** Melhorado tratamento de erros para extrair mensagens legíveis de diferentes estruturas de resposta
+3. **Teste:** Validado fluxo completo de cadastro e login localmente com sucesso
 
 ---
 

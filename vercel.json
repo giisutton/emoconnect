@@ -2,6 +2,10 @@
     "github": {
         "silent": true
     },
+    "buildCommand": "npm --prefix frontend install && npm --prefix frontend run build",
+    "outputDirectory": "frontend/dist",
+    "installCommand": "npm --prefix backend install",
+    "framework": null,
     "rewrites": [
         {
             "source": "/api/v1/:path*",

@@ -4,6 +4,25 @@ const TOKEN_KEY = 'emoconnect_token';
 const USER_KEY = 'emoconnect_user';
 
 export const authService = {
+    // Normaliza mensagens de erro recebidas do servidor/axios
+    _formatServerError(error) {
+        const resp = error?.response?.data;
+        if (!resp) return error?.message || 'Erro de rede';
+        if (typeof resp === 'string') return resp;
+        if (typeof resp.error === 'string') return resp.error;
+        if (typeof resp.message === 'string') return resp.message;
+        try {
+            // Tenta extrair valores úteis de um objeto
+            if (typeof resp === 'object') {
+                const values = Object.values(resp).flat();
+                return values.join(' | ');
+            }
+            return JSON.stringify(resp);
+        } catch (e) {
+            return 'Erro no servidor';
+        }
+    },
+
     // Salvar token
     saveToken(token) {
         localStorage.setItem(TOKEN_KEY, token);
@@ -70,7 +89,8 @@ export const authService = {
 
             return { token, user };
         } catch (error) {
-            throw new Error(error.response?.data?.error || 'Erro ao cadastrar');
+            const msg = this._formatServerError(error) || 'Erro ao cadastrar';
+            throw new Error(msg);
         }
     },
 
@@ -85,7 +105,8 @@ export const authService = {
 
             return { token, user };
         } catch (error) {
-            throw new Error(error.response?.data?.error || 'Erro ao fazer login');
+            const msg = this._formatServerError(error) || 'Erro ao fazer login';
+            throw new Error(msg);
         }
     },
 
@@ -109,7 +130,8 @@ export const authService = {
             this.saveUser(user);
             return user;
         } catch (error) {
-            throw new Error(error.response?.data?.error || 'Erro ao atualizar perfil');
+            const msg = this._formatServerError(error) || 'Erro ao atualizar perfil';
+            throw new Error(msg);
         }
     },
 
@@ -119,7 +141,8 @@ export const authService = {
             const response = await api.put('/auth/senha', { senhaAtual, novaSenha });
             return response.data;
         } catch (error) {
-            throw new Error(error.response?.data?.error || 'Erro ao alterar senha');
+            const msg = this._formatServerError(error) || 'Erro ao alterar senha';
+            throw new Error(msg);
         }
     },
 
@@ -131,7 +154,8 @@ export const authService = {
             this.saveUser(user);
             return user;
         } catch (error) {
-            throw new Error(error.response?.data?.error || 'Erro ao obter dados do usuário');
+            const msg = this._formatServerError(error) || 'Erro ao obter dados do usuário';
+            throw new Error(msg);
         }
     },
 

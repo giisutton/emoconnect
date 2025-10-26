@@ -42,7 +42,23 @@ const Login = () => {
             navigate('/');
         } catch (err) {
             console.error('Erro no login:', err);
-            const errorMessage = err?.response?.data?.message || err?.message || 'Erro ao fazer login. Tente novamente.';
+            const serverData = err?.response?.data;
+            let errorMessage = 'Erro ao fazer login. Tente novamente.';
+
+            if (serverData) {
+                if (typeof serverData.message === 'string') errorMessage = serverData.message;
+                else if (typeof serverData.error === 'string') errorMessage = serverData.error;
+                else {
+                    try {
+                        errorMessage = JSON.stringify(serverData);
+                    } catch {
+                        errorMessage = String(serverData);
+                    }
+                }
+            } else if (err?.message) {
+                errorMessage = err.message;
+            }
+
             setError(errorMessage);
         } finally {
             setLoading(false);
