@@ -10,12 +10,12 @@ const missingEnvVars = requiredEnvVars.filter(
 );
 
 if (missingEnvVars.length > 0) {
-  console.error(
-    "❌ ERRO: Variáveis de ambiente obrigatórias não configuradas:"
+  console.warn(
+    "⚠️ AVISO: Variáveis de ambiente de banco de dados não configuradas:"
   );
-  missingEnvVars.forEach((varName) => console.error(`   - ${varName}`));
-  console.error("\nCrie um arquivo .env baseado no .env.example");
-  process.exit(1);
+  missingEnvVars.forEach((varName) => console.warn(`   - ${varName}`));
+  console.warn("\n⚠️ O sistema funcionará com funcionalidades limitadas (sem persistência)");
+  // NÃO FAZ process.exit() - permite que o servidor inicie mesmo sem DB
 }
 
 // Configuração da conexão

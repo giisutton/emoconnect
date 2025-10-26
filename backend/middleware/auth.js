@@ -1,11 +1,10 @@
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || "fallback_secret_key_change_in_production";
 
-// Validar que JWT_SECRET existe
-if (!JWT_SECRET) {
-  console.error("❌ ERRO CRÍTICO: JWT_SECRET não configurado no arquivo .env");
-  process.exit(1);
+// Avisar se JWT_SECRET não está configurado (mas não travar)
+if (!process.env.JWT_SECRET) {
+  console.warn("⚠️ AVISO: JWT_SECRET não configurado - usando fallback (INSEGURO EM PRODUÇÃO)");
 }
 
 // Middleware de autenticação

@@ -3,13 +3,12 @@ import jwt from "jsonwebtoken";
 import { getConnection } from "../config/database.js";
 
 const SALT_ROUNDS = 10;
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || "fallback_secret_key_change_in_production";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 
-// Validar que JWT_SECRET existe
-if (!JWT_SECRET) {
-  console.error("❌ ERRO CRÍTICO: JWT_SECRET não configurado no arquivo .env");
-  process.exit(1);
+// Avisar se JWT_SECRET não está configurado (mas não travar o servidor)
+if (!process.env.JWT_SECRET) {
+  console.warn("⚠️ AVISO: JWT_SECRET não configurado - usando fallback (INSEGURO EM PRODUÇÃO)");
 }
 
 // Gerar token JWT
