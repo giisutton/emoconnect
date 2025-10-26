@@ -258,12 +258,8 @@ process.on("SIGINT", () => {
   process.exit(0);
 });
 
-app.listen(PORT, async () => {
-  logger.info(
-    `🚀 EmoConnect server running on port ${PORT} in ${NODE_ENV} mode`
-  );
-
-  // Testar conexão com banco de dados
+// Inicializar conexão com banco de dados
+const initDatabase = async () => {
   const dbConnected = await testConnection();
   if (dbConnected) {
     logger.info("✅ Banco de dados conectado com sucesso");
@@ -272,6 +268,20 @@ app.listen(PORT, async () => {
       "⚠️ Falha ao conectar com banco de dados - usando localStorage apenas"
     );
   }
-});
+};
+
+// No Vercel (serverless), não usamos app.listen()
+// A aplicação é exportada e executada pelo wrapper em /api/index.js
+if (NODE_ENV !== "production") {
+  app.listen(PORT, async () => {
+    logger.info(
+      `🚀 EmoConnect server running on port ${PORT} in ${NODE_ENV} mode`
+    );
+    await initDatabase();
+  });
+} else {
+  // Em produção (Vercel), apenas inicializa o banco
+  initDatabase();
+}
 
 export default app;
