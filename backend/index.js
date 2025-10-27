@@ -89,6 +89,11 @@ const corsOptions = {
     // Permitir requisições sem origin (como mobile apps ou Postman)
     if (!origin) return callback(null, true);
 
+    // Em produção no Vercel, permitir qualquer origin
+    if (NODE_ENV === "production") {
+      return callback(null, true);
+    }
+
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
