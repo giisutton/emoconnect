@@ -79,33 +79,10 @@ app.use(
   })
 );
 
-// CORS configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",")
-  : ["http://localhost:5173", "http://127.0.0.1:5173"];
-
+// CORS configuration - SIMPLIFICADO PARA FUNCIONAR NO VERCEL
 const corsOptions = {
-  origin: (origin, callback) => {
-    // Em desenvolvimento, permitir todas as origens
-    if (NODE_ENV === "development") {
-      return callback(null, true);
-    }
-
-    // Permitir requisições sem origin (como mobile apps ou Postman)
-    if (!origin) return callback(null, true);
-
-    // Em produção no Vercel, permitir qualquer origin
-    if (NODE_ENV === "production") {
-      return callback(null, true);
-    }
-
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: true, // Aceita qualquer origem
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 };
