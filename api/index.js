@@ -13,23 +13,20 @@ async function getApp() {
 
 export default async function handler(req, res) {
     try {
+        // Ajustar a URL para remover /api e deixar apenas /v1/...
+        // Exemplo: /api/v1/auth/login → /api/v1/auth/login (sem mudança)
+        const originalUrl = req.url;
+        
         // Log da requisição para debug
         console.log('📥 Request:', {
             method: req.method,
             url: req.url,
-            path: req.path,
+            originalUrl: originalUrl,
             headers: req.headers,
             body: req.method === 'POST' ? req.body : undefined
         });
 
         const expressApp = await getApp();
-
-        // Garantir que a resposta tem formato JSON adequado
-        const originalJson = res.json;
-        res.json = function (data) {
-            console.log('📤 Response:', data);
-            return originalJson.call(this, data);
-        };
 
         // Adicionar headers CORS manualmente como fallback
         res.setHeader('Access-Control-Allow-Origin', '*');
