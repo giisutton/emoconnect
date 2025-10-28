@@ -5,7 +5,7 @@
     "installCommand": "npm install && cd backend && npm install",
     "rewrites": [
         {
-            "source": "/api/:path*",
+            "source": "/api/v1/:path*",
             "destination": "/api"
         }
     ],
