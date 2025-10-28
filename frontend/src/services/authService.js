@@ -97,7 +97,7 @@ export const authService = {
     // Login
     async login(email, senha) {
         try {
-            const response = await api.post('/auth/login', { email, senha });
+            const response = await api.post('/v1/auth/login', { email, senha });
             const { token, user } = response.data.data;
 
             this.saveToken(token);
