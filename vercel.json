@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "buildCommand": "cd frontend && npm install && npx vite build",
+    "buildCommand": "cd frontend && npm install && VITE_API_URL=/api npx vite build",
     "outputDirectory": "frontend/dist",
     "installCommand": "npm install && cd backend && npm install",
     "functions": {
@@ -10,6 +10,7 @@
         }
     },
     "env": {
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        "VITE_API_URL": "/api"
     }
 }
