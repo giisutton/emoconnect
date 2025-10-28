@@ -18,6 +18,7 @@ export default async function handler(req, res) {
             method: req.method,
             url: req.url,
             path: req.path,
+            headers: req.headers,
             body: req.method === 'POST' ? req.body : undefined
         });
 
@@ -30,9 +31,21 @@ export default async function handler(req, res) {
             return originalJson.call(this, data);
         };
 
+        // Adicionar headers CORS manualmente como fallback
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+        // Tratar OPTIONS (preflight)
+        if (req.method === 'OPTIONS') {
+            return res.status(200).end();
+        }
+
         return expressApp(req, res);
     } catch (error) {
         console.error('❌ Error in serverless function:', error);
+        console.error('Stack:', error.stack);
         return res.status(500).json({
             success: false,
             error: 'Internal Server Error',

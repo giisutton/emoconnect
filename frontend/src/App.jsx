@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import Profile from './pages/Profile';
+import LoginDebug from './pages/LoginDebug';
 
 import './App.css';
 
@@ -19,6 +20,7 @@ function App() {
           {/* Rotas públicas */}
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Register />} />
+          <Route path="/debug" element={<LoginDebug />} />
 
           {/* Rotas protegidas */}
           <Route
