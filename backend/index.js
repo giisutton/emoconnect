@@ -86,6 +86,11 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
 
 const corsOptions = {
   origin: (origin, callback) => {
+    // Em desenvolvimento, permitir todas as origens
+    if (NODE_ENV === "development") {
+      return callback(null, true);
+    }
+
     // Permitir requisições sem origin (como mobile apps ou Postman)
     if (!origin) return callback(null, true);
 
