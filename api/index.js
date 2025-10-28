@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         // Ajustar a URL para remover /api e deixar apenas /v1/...
         // Exemplo: /api/v1/auth/login → /api/v1/auth/login (sem mudança)
         const originalUrl = req.url;
-        
+
         // Log da requisição para debug
         console.log('📥 Request:', {
             method: req.method,

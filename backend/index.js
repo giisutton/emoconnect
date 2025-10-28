@@ -131,7 +131,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// API versioning
+// API versioning - Duplicar rotas para /api e /api/v1
 app.use("/api/v1", (req, res, next) => {
   res.header("API-Version", "v1");
   next();
@@ -139,12 +139,15 @@ app.use("/api/v1", (req, res, next) => {
 
 // Rotas de autenticação (públicas e protegidas)
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/auth", authRoutes); // DUPLICADO para Vercel
 
 // Rotas administrativas (requerem autenticação e role admin/moderator)
 app.use("/api/v1/admin", adminRoutes);
+app.use("/api/admin", adminRoutes); // DUPLICADO para Vercel
 
 // Rotas de dados (protegidas - requerem autenticação)
 app.use("/api/v1/data", authenticateToken, apiRoutes);
+app.use("/api/data", authenticateToken, apiRoutes); // DUPLICADO para Vercel
 
 // Gemini AI proxy endpoint (para ocultar API key)
 app.post("/api/v1/chat/gemini", async (req, res) => {
